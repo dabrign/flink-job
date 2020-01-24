@@ -33,7 +33,7 @@ ENV PATH $PATH:$FLINK_HOME/bin
 
 # flink-dist can point to a directory or a tarball on the local system
 ARG flink_dist=1.9.1
-ARG job_artifacts=./artifacts
+ARG job_artifacts=./target
 ARG python_version=NOT_SET
 # hadoop jar is optional
 # ARG hadoop_jar=NOT_SET*
