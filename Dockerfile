@@ -75,9 +75,7 @@ RUN chmod 755 /docker-entrypoint.sh
 # Needed on OpenShift for the entrypoint script to work
 RUN chmod -R 777 /opt/flink
 
-#  control script expects manifest.yaml at this location
-RUN chown -R flink:flink /var
-RUN chmod -R 777 /opt/artifacts
+RUN chmod -R 777 /opt
 
 USER flink
 EXPOSE 8081 6123
