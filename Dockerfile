@@ -40,6 +40,8 @@ ARG python_version=NOT_SET
 
 ADD http://www.apache.org/dist/flink/flink-1.9.1/flink-1.9.1-bin-scala_2.12.tgz $FLINK_INSTALL_PATH
 
+#COPY flink-1.9.1-bin-scala_2.12.tgz $FLINK_INSTALL_PATH/
+
 WORKDIR $FLINK_INSTALL_PATH
 
 
@@ -68,6 +70,8 @@ RUN set -x && \
   chown -h flink:flink $FLINK_HOME
 
 COPY docker-entrypoint.sh /
+
+RUN chmod a+x /docker-entrypoint.sh
 
 USER flink
 EXPOSE 8081 6123
