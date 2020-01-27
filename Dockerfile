@@ -58,7 +58,7 @@ RUN \
 # Install build dependencies and flink
 # ADD $flink_dist $hadoop_jar $FLINK_INSTALL_PATH/
 ADD $job_artifacts/* $FLINK_JOB_ARTIFACTS_DIR/
-RUN adduser --uid 10001000 flink
+
 RUN set -x && \
   ln -s $FLINK_INSTALL_PATH/flink-[0-9]* $FLINK_HOME && \
   ln -s $FLINK_JOB_ARTIFACTS_DIR $FLINK_USR_LIB_DIR && \
@@ -72,8 +72,11 @@ RUN set -x && \
 COPY docker-entrypoint.sh /
 
 RUN chmod 755 /docker-entrypoint.sh
-RUN chmod -R 766 $FLINK_HOME/log
+# Needed on OpenShift for the entrypoint script to work
+RUN chmod -R 777 /opt/flink
 
+#  control script expects manifest.yaml at this location
+RUN chown -R flink:flink /var
 RUN chmod -R 777 /opt/artifacts
 
 USER flink
