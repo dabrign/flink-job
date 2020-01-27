@@ -40,6 +40,9 @@ ARG python_version=NOT_SET
 
 ADD http://www.apache.org/dist/flink/flink-1.9.1/flink-1.9.1-bin-scala_2.12.tgz $FLINK_INSTALL_PATH
 
+WORKDIR $FLINK_INSTALL_PATH
+
+
 RUN tar -xzvf $FLINK_INSTALL_PATH/flink-1.9.1-bin-scala_2.12.tgz
 
 # Install Python
