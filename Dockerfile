@@ -32,13 +32,15 @@ ENV FLINK_USR_LIB_DIR $FLINK_HOME/usrlib
 ENV PATH $PATH:$FLINK_HOME/bin
 
 # flink-dist can point to a directory or a tarball on the local system
-ARG flink_dist=1.9.1
+ARG flink_dist=flink-1.9.1-bin-scala_2.12.tgz
 ARG job_artifacts=./target
 ARG python_version=NOT_SET
 # hadoop jar is optional
 # ARG hadoop_jar=NOT_SET*
 
 ADD http://www.apache.org/dist/flink/flink-1.9.1/flink-1.9.1-bin-scala_2.12.tgz $FLINK_INSTALL_PATH
+
+RUN tar -xzvf $FLINK_INSTALL_PATH/flink-1.9.1-bin-scala_2.12.tgz
 
 # Install Python
 RUN \
