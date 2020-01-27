@@ -58,7 +58,7 @@ RUN \
 # Install build dependencies and flink
 # ADD $flink_dist $hadoop_jar $FLINK_INSTALL_PATH/
 ADD $job_artifacts/* $FLINK_JOB_ARTIFACTS_DIR/
-RUN addgroup -S flink && flink -S flink -G flink
+RUN adduser --uid 10001000 flink
 RUN set -x && \
   ln -s $FLINK_INSTALL_PATH/flink-[0-9]* $FLINK_HOME && \
   ln -s $FLINK_JOB_ARTIFACTS_DIR $FLINK_USR_LIB_DIR && \
