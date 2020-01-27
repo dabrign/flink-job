@@ -71,7 +71,8 @@ RUN set -x && \
 
 COPY docker-entrypoint.sh /
 
-RUN chmod a+x /docker-entrypoint.sh
+RUN chmod 755 /docker-entrypoint.sh
+RUN chmod -R 766 $FLINK_HOME/log
 
 USER flink
 EXPOSE 8081 6123
