@@ -19,7 +19,7 @@
 FROM openjdk:8-jre-alpine
 
 # Install requirements
-RUN apk update && apk add --no-cache bash snappy libc6-compat
+RUN apk update && apk add --no-cache bash snappy libc6-compat shadow
 
 # Flink environment variables
 ENV FLINK_INSTALL_PATH=/opt
@@ -38,14 +38,17 @@ ARG python_version=NOT_SET
 # hadoop jar is optional
 # ARG hadoop_jar=NOT_SET*
 
+ARG UID=1000610000
+ARG GID=1000610000
+
 ADD http://www.apache.org/dist/flink/flink-1.9.1/flink-1.9.1-bin-scala_2.12.tgz $FLINK_INSTALL_PATH
 
-#COPY flink-1.9.1-bin-scala_2.12.tgz $FLINK_INSTALL_PATH/
+# COPY flink-1.9.1-bin-scala_2.12.tgz $FLINK_INSTALL_PATH/
 
 WORKDIR $FLINK_INSTALL_PATH
 
 
-RUN tar -xzvf $FLINK_INSTALL_PATH/flink-1.9.1-bin-scala_2.12.tgz
+RUN tar -xzvf $FLINK_INSTALL_PATH/flink-1.9.1-bin-scala_2.12.tgz && rm -f $FLINK_INSTALL_PATH/flink-1.9.1-bin-scala_2.12.tgz
 
 # Install Python
 RUN \
@@ -64,7 +67,8 @@ RUN set -x && \
   ln -s $FLINK_JOB_ARTIFACTS_DIR $FLINK_USR_LIB_DIR && \
   if [ -n "$python_version" ]; then ln -s $FLINK_OPT_DIR/flink-python*.jar $FLINK_LIB_DIR; fi && \
   if [ -f ${FLINK_INSTALL_PATH}/flink-shaded-hadoop* ]; then ln -s ${FLINK_INSTALL_PATH}/flink-shaded-hadoop* $FLINK_LIB_DIR; fi && \
-  addgroup -S flink && adduser -D -S -H -G flink -h $FLINK_HOME flink && \
+  /usr/sbin/groupadd -g $GID -r flink  && \
+  /usr/sbin/useradd --system --no-create-home --gid 1000610000 --uid 1000610000 --no-log-init flink && \
   chown -R flink:flink ${FLINK_INSTALL_PATH}/flink-* && \
   chown -R flink:flink ${FLINK_JOB_ARTIFACTS_DIR}/ && \
   chown -h flink:flink $FLINK_HOME
